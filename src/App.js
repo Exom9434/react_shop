@@ -1,14 +1,16 @@
 import './App.css';
+import {useState} from "react"
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, NavBar,Nav, Container } from 'react-bootstrap';
-
+import {a,b} from "./data.js"
 
 function App() {
+  let [shoes] = useState()
   return (
     <div className="App">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">Shopper</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -29,7 +31,26 @@ function App() {
     </ul>
   </div>
 </nav>
-      <Button variant = "primary"> Primary </Button>
+<div className="main-bg" ></div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
+      <h4>상품명</h4>
+      <p>상품설명</p>
+    </div>
+    <div class="col-sm">
+    <img src="https://codingapple1.github.io/shop/shoes2.jpg"  width="80%" />
+      <h4>상품명</h4>
+      <p>상품설명</p>
+    </div>
+    <div class="col-sm">
+    <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
+      <h4>상품명</h4>
+      <p>상품설명</p>
+    </div>
+  </div>
+</div>
     </div>
   );
 }
