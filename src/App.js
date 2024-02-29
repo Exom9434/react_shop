@@ -3,38 +3,89 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import data from "./data.js";
+import Detail from "./routes/Detail.js"
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 
 function App() {
+
   const [shoes] = useState(data);
+  let navigate = useNavigate();
+
 
   return (
     <div className="App">
+
       <Navbar bg="light" expand="lg">
         <Navbar.Brand href="#">Shopper</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
           <Nav className="mr-auto">
-            <Nav.Link href="#">Home</Nav.Link>
-            <Nav.Link href="#">Features</Nav.Link>
-            <Nav.Link href="#">Pricing</Nav.Link>
+            <Nav.Link href="#" onClick={()=>{ navigate('/')}} > Home </Nav.Link>
+            <Nav.Link href="#" onClick={()=>{ navigate('/detail')}} > Detail </Nav.Link>
+            <Nav.Link href="#" onClick={()=>{ navigate('/event')}} >Event</Nav.Link>
             <Nav.Link disabled href="#">Disabled</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <div className="main-bg"></div>
-      <Container>
-        <div className="row">
-          {shoes.map((a,i)=>{
-            return (
-              <Card shoes={shoes[i]} i={i}></Card>
-            )
-          })
-        }
+
+        <Link to= "/" style = {{textDecoration: 'none', margin: 10}}>홈</Link>
+        <Link to="/detail" style = {{textDecoration: 'none'}} >상세페이지</Link>
+      
+      <Routes>
+      <Route  path="/" element={
+      <div>
+        <div> 메인 페이지임</div>
+          <div className="main-bg"></div>
+          <Container>
+            <div className="row">
+              {shoes.map((a,i)=>{
+                return (
+                  <Card shoes={shoes[i]} i={i}></Card>
+                )
+              })
+            }
+            </div>
+          </Container>
         </div>
-      </Container>
-    </div>
+    } />
+      <Route path="/detail" element={<Detail/>}/>
+      <Route path="*" element={<div>404 error </div>}></Route>
+      
+      <Route path='/about' element = {<About/>}></Route>
+
+      <Route path='/about' element = {<About/>}>
+        <Route path='member' element = {<div>멤버임</div>}></Route>
+        <Route path='location' element = {<div>위치정보임</div>}></Route>
+      </Route>
+
+      <Route path='/event' element = {<Event/>}>
+        <Route path='one' element = {<div>첫 주문시 양배추즙 서비스</div>}></Route>
+        <Route path='two' element = {<div>생일기념 쿠폰 받기</div>}></Route>
+      </Route>
+
+      </Routes> 
+</div>
   );
 }
+
+function Event(){
+  return(
+    <div>
+      <h4>오늘의 이벤트</h4>
+    </div>
+  )
+}
+
+function About(){
+  return(
+    <div>
+      <h4>회사정보임</h4>
+      <Outlet></Outlet> 
+      {/* nested routes가 나타날 구멍*/} 
+    </div>
+  )
+}
+
 
 function Card(props){
   return (
