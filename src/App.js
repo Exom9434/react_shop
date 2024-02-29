@@ -40,7 +40,7 @@ function App() {
             <div className="row">
               {shoes.map((a,i)=>{
                 return (
-                  <Card shoes={shoes[i]} i={i}></Card>
+                  <Card key={shoes.id} shoes={shoes[i]} i={i}></Card>
                 )
               })
             }
@@ -48,7 +48,9 @@ function App() {
           </Container>
         </div>
     } />
-      <Route path="/detail" element={<Detail/>}/>
+
+      <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>b
+
       <Route path="*" element={<div>404 error </div>}></Route>
       
       <Route path='/about' element = {<About/>}></Route>
