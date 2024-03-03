@@ -5,12 +5,14 @@ import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import data from "./data.js";
 import Detail from "./routes/Detail.js"
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import axios from "axios"
 
 function App() {
 
-  const [shoes] = useState(data);
+  const [shoes, setShoes] = useState(data);
+  const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
-
+  const [clicked, setClicked] = useState(1);
 
   return (
     <div className="App">
@@ -38,6 +40,7 @@ function App() {
           <div className="main-bg"></div>
           <Container>
             <div className="row">
+            {loading === true ? <Loading /> : null}
               {shoes.map((a,i)=>{
                 return (
                   <Card key={shoes.id} shoes={shoes[i]} i={i}></Card>
@@ -45,6 +48,23 @@ function App() {
               })
             }
             </div>
+            <button onClick={()=>{
+              
+              setLoading(true)
+
+              setClicked(Clicked => Clicked + 1); // Increment clicked state
+              axios.get(`https://codingapple1.github.io/shop/data${clicked}.json`) // Use template literal correctly
+              .then((result) => {
+              let copy = [...shoes, ...result.data]; // Assuming `shoes` is your state for storing fetched data
+      setShoes(copy);
+    },
+      setLoading(false))
+      .catch(() => {
+        console.log('Failed to fetch data')
+        setLoading(false)}
+        )
+      }}>버튼</button>
+
           </Container>
         </div>
     } />
@@ -88,13 +108,21 @@ function About(){
   )
 }
 
-
+/// props가 한무더기로 object로 전달되니까 props.shoes~
 function Card(props){
   return (
     <div className="col-md-4">
-      <img src={'https://codingapple1.github.io/shop/shoes' + (props.i+1) + '.jpg'} width="80%" />
+      <img alt="대체 텍스트" src={'https://codingapple1.github.io/shop/shoes' + (props.i+1) + '.jpg'} width="80%" />
       <h4>{ props.shoes.title }</h4>
       <p>{ props.shoes.price }</p>
+    </div>
+  )
+}
+
+function Loading(props){
+  return (
+    <div>
+      로딩중임다
     </div>
   )
 }

@@ -20,7 +20,7 @@ function Detail(props){
   //useEffect안에 리턴 넣으면 useEffect 동작하기 전에 먼저 동작함, 기존 데이터를 삭제해서 중복을 회피하는 등의 방법
   // CLENA UP 함수는 마운트 시에는 작동하지 않음.
   useEffect(() =>{
-    if (isNaN(num) == true){
+    if (isNaN(num) === true){
       window.alert('그러지마세요')
     }
   }, [num])
