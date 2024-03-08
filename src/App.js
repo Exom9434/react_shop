@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import data from "./data.js";
@@ -7,12 +7,16 @@ import Detail from "./routes/Detail.js"
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from "axios"
 
+export let Context1 = createContext() // state 보관함
+
+
 function App() {
 
   const [shoes, setShoes] = useState(data);
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   const [clicked, setClicked] = useState(1);
+  let [stock, setStock] = useState([10,11,12])
 
   return (
     <div className="App">
@@ -23,7 +27,7 @@ function App() {
         <Navbar.Collapse id="navbarNav">
           <Nav className="mr-auto">
             <Nav.Link href="#" onClick={()=>{ navigate('/')}} > Home </Nav.Link>
-            <Nav.Link href="#" onClick={()=>{ navigate('/detail')}} > Detail </Nav.Link>
+            <Nav.Link href="#" onClick={()=>{ navigate('/detail/1')}} > Detail </Nav.Link>
             <Nav.Link href="#" onClick={()=>{ navigate('/event')}} >Event</Nav.Link>
             <Nav.Link disabled href="#">Disabled</Nav.Link>
           </Nav>
@@ -31,7 +35,7 @@ function App() {
       </Navbar>
 
         <Link to= "/" style = {{textDecoration: 'none', margin: 10}}>홈</Link>
-        <Link to="/detail" style = {{textDecoration: 'none'}} >상세페이지</Link>
+        <Link to="/detail/1" style = {{textDecoration: 'none'}} >상세페이지</Link>
       
       <Routes>
       <Route  path="/" element={
@@ -51,11 +55,11 @@ function App() {
             <button onClick={()=>{
               
               setLoading(true)
-
-              setClicked(Clicked => Clicked + 1); // Increment clicked state
-              axios.get(`https://codingapple1.github.io/shop/data${clicked}.json`) // Use template literal correctly
+              
+              setClicked(Clicked => Clicked + 1);
+              axios.get(`https://codingapple1.github.io/shop/data${clicked}.json`)
               .then((result) => {
-              let copy = [...shoes, ...result.data]; // Assuming `shoes` is your state for storing fetched data
+              let copy = [...shoes, ...result.data];
       setShoes(copy);
     },
       setLoading(false))
@@ -69,7 +73,10 @@ function App() {
         </div>
     } />
 
-      <Route path="/detail/:id" element={<Detail shoes={shoes}/>}/>b
+      <Route path="/detail/:id" element={
+      <Context1.Provider value={{stock,shoes}}>
+        <Detail shoes={shoes} className="start"/>
+      </Context1.Provider>}/>
 
       <Route path="*" element={<div>404 error </div>}></Route>
       
