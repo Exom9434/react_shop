@@ -7,17 +7,31 @@ import Detail from "./routes/Detail.js"
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from "axios"
 import Cart from "./routes/Cart.js"
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export let Context1 = createContext() // state 보관함
 
 
 function App() {
 
+  let result = useQuery(['작명'], ()=>
+    axios.get('https://codingapple1.github.io/userdata.json')
+    .then((a)=>{ return a.data })
+  )
+
+  useEffect(() => {
+    if (localStorage.getItem("watched") === null) {
+      localStorage.setItem("watched", JSON.stringify([]));
+    }
+  }, []);
+
+
   const [shoes, setShoes] = useState(data);
   const [loading, setLoading] = useState(false);
   let navigate = useNavigate();
   const [clicked, setClicked] = useState(1);
   let [stock, setStock] = useState([10,11,12])
+  let [detailed, setDetailed] = useState(0)
 
   return (
     <div className="App">
@@ -75,9 +89,9 @@ function App() {
     } />
 
       <Route path="/detail/:id" element={
-      <Context1.Provider value={{stock,shoes}}>
-        <Detail shoes={shoes} className="start"/>
-      </Context1.Provider>}/>
+        <Context1.Provider value={{stock,shoes}}>
+          <Detail shoes={shoes} className="start"/>
+        </Context1.Provider>}/>
 
       <Route path="*" element={<div>404 error </div>}></Route>
       
@@ -130,7 +144,7 @@ function Card(props){
   )
 }
 
-function Loading(props){
+function Loading(){
   return (
     <div>
       로딩중임다

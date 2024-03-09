@@ -1,19 +1,23 @@
 import React, { useState, useContext } from 'react'
-import {useParams} from "react-router-dom"
+import {json, useParams} from "react-router-dom"
 import { useEffect } from 'react';
 import { Nav } from 'react-bootstrap';
 
 import {Context1} from "./../App.js"
-
+import { UseDispatch, useDispatch } from 'react-redux';
+import { addItem } from './../store/stockSlice.js';
 // single page react application : component간 state 공유가 어려움.
 
 function Detail(props){
+  let {id} = useParams();
+  id = parseInt(id,Number);
+  let result = props.shoes.find(x => x.id === id)
   let {stock} = useContext(Context1)
-
   let [alert, setAlert] = useState(true)
   let [num, setNum] = useState('')
   let [tab, setTab] = useState(0)
   let [fade2,setFade2] = useState('')
+  let dispatch = useDispatch()
 
   useEffect(()=>{
     setFade2('end')
@@ -21,6 +25,15 @@ function Detail(props){
       setFade2('')
     }
   }, [])
+
+  useEffect(()=>{
+    let 꺼낸거 = localStorage.getItem("watched")
+    꺼낸거 = JSON.parse(꺼낸거)
+    꺼낸거.push(result.id)
+    꺼낸거 = new Set(꺼낸거)
+    꺼낸거 = Array.from(꺼낸거)
+    localStorage.setItem('watched',JSON.stringify(꺼낸거))
+  })
 
   //useEffect 안에 있는 코드는 html 렌더링 후에 동작함, 홈페이지 렌더링 같은 걸 먼저하고 시간이  필요한 건 따로 굴림
   // 어려운 연산, 서버에서 데이터 가져오는 작업, 타이머 장착
@@ -42,11 +55,7 @@ function Detail(props){
     }
   }, [num])
 
-    let { id } = useParams();
-
-    id = parseInt(id,10);
-
-    let result = props.shoes.find((x) => x.id === id);
+;
 
     return(
       <div className={"container start " + fade2}>
@@ -60,7 +69,9 @@ function Detail(props){
               <h4 className="pt-5">{result.title}</h4>
               <p>{result.content}</p>
               <p>{result.price}원</p>
-              <button className="btn btn-danger">주문하기</button> 
+              <button className="btn btn-danger" onClick={()=>{
+    dispatch(addItem( {id : 1, name : 'Red Knit', count : 1} ))
+  }}>주문하기</button>
             </div>
         </div>
 
