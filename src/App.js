@@ -7,17 +7,11 @@ import Detail from "./routes/Detail.js"
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from "axios"
 import Cart from "./routes/Cart.js"
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export let Context1 = createContext() // state 보관함
 
 
 function App() {
-
-  let result = useQuery(['작명'], ()=>
-    axios.get('https://codingapple1.github.io/userdata.json')
-    .then((a)=>{ return a.data })
-  )
 
   useEffect(() => {
     if (localStorage.getItem("watched") === null) {
