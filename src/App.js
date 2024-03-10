@@ -1,12 +1,15 @@
 import './App.css';
-import React, { useState, useEffect, createContext } from 'react';
+import React, {lazy, useState, useEffect, createContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Nav, Container } from 'react-bootstrap';
 import data from "./data.js";
-import Detail from "./routes/Detail.js"
+
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from "axios"
-import Cart from "./routes/Cart.js"
+// import Cart from "./routes/Cart.js"
+// import Detail from "./routes/Detail.js"
+const Detail = lazy( () => import('./routes/Detail.js') )
+const Cart = lazy( () => import('./routes/Cart.js') )
 
 export let Context1 = createContext() // state 보관함
 

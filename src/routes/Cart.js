@@ -3,13 +3,15 @@ import Table from "react-bootstrap/Table"
 import { changeName, increase} from "/Users/nojaegyeong/Documents/GitHub/react_shop/src/store/userSlice.js"
 import {addCount, addItem} from "./../store/stockSlice.js"
 ///테이블 헤드-tr쓰면 행하나 ht,hd로 열하나씩 생성
+import {memo} from 'react'
+
 function Cart(){
     let state = useSelector((state)=>{return state}) //store 안에 있던 모든 state가 됨. state.user 처럼 어떤 스테이트를 쓸지 특정 가능함.
     let dispatch = useDispatch()
+    let [count, setCount] = useState(0)
 
     return(
         <div> 
-
             <h6> {state.user.age} </h6>
             console.log(state.cart)
             <button onClick={()=>{dispatch(increase())}}> + </button>
@@ -43,5 +45,7 @@ function Cart(){
         </div>
     )
 }
+
+
 
 export default Cart
